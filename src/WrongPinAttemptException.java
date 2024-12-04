@@ -1,6 +1,5 @@
-// Исключение для блокировки аккаунта
-public class AccountIsLockedException extends Exception {
-    public AccountIsLockedException(String message) {
+public class WrongPinAttemptException extends Exception {
+    public WrongPinAttemptException(String message) {
         super(message);
     }
 }

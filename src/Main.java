@@ -1,15 +1,28 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        TerminalServer server = new TerminalServer(5000); // Начальный баланс 5000
+        PinValidator validator = new PinValidator("1234"); // Корректный PIN-код
+        Terminal terminal = new TerminalImpl(server, validator);
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        while (true) {
+            try {
+                terminal.enterPinCode(); // Пользователь вводит пин-код
+
+                terminal.checkBalance();       // Проверка баланса
+                terminal.withdraw(300);        // Снятие 300
+                terminal.deposit(700);         // Пополнение на 700
+
+                break; // Выход из цикла после успешной аутентификации
+            } catch (Exception e) {
+                System.err.println(e.getMessage()); // Вывод ошибки
+                if (e instanceof AccountBlockedException) {
+                    try {
+                        Thread.sleep(10000); // Ждём 10 секунд перед следующей попыткой
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
         }
     }
 }

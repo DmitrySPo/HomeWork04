@@ -1,2 +1,5 @@
-package PACKAGE_NAME;public class AccountBlockedException {
+public class AccountBlockedException extends Exception {
+    public AccountBlockedException(String message) {
+        super(message);
+    }
 }
